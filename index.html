@@ -3,14 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>fforw canvas-base, add scripts and edit title</title>
+<title>Jammin' Zoom-Rotator 2011</title>
 <style type="text/css">
 body
 {
     margin:0; 
     padding: 0;
-    background: #000;
+    background: #111;
     color: #88c;
+}
+
+#wrap
+{
+    width: 512px;
+    margin: 20px auto;
 }
 </style>
 
@@ -18,11 +24,19 @@ body
 </script>
 <script type="text/javascript" src="script/Class.js">
 </script>
+<script type="text/javascript" src="script/Interpolator.js">
+</script>
 <script type="text/javascript" src="script/mainloop.js">
+</script>
+<script type="text/javascript" src="script/jamrot.js">
 </script>
 
 </head>
 <body>
-<canvas id="teh-canvas"><p>This only works with browsers supporting canvas.</p></canvas>
+<div id="wrap">
+<canvas id="teh-canvas" width="512" height="512">
+<img id="jamrot" src="jamrot.jpg" />
+<p>No canvas, no awesome.</p></canvas>
+</div>
 </body>
 </html>
