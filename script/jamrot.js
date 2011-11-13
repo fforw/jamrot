@@ -45,25 +45,27 @@ window.onload = function()
     setAlpha(screen,255);
 
     // create interpolator with 3 zoomrotator state keyframes using easeInOutQuad tween.
-    var ip = new Interpolator("easeInOutQuad");
-    ip.add({
-        x: width / 5,
-        y: height / 5,
-        r: 0,
-        zoom: 0.2
-    });
-    ip.add({
-        x: width / 2,
-        y: height / 2,
-        r: Math.PI * 2,
-        zoom: 1
-    });
-    ip.add({
-        x: width / 5,
-        y: height / 5,
-        r: Math.PI * 4,
-        zoom: 0.2
-    });
+    var ip = new Interpolator("easeInOutQuad", 
+    [
+        {
+            x: width / 5,
+            y: height / 5,
+            r: 0,
+            zoom: 0.2
+        },
+        {
+            x: width / 2,
+            y: height / 2,
+            r: Math.PI * 2,
+            zoom: 1
+        },
+        {
+            x: width / 5,
+            y: height / 5,
+            r: Math.PI * 4,
+            zoom: 0.2
+        }
+    ]);
 
     var time = 0.0;
     
