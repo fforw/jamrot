@@ -99,7 +99,7 @@ Time-shift
 
 Now the only thing I needed to do was to interpolate the keyframe values per line with a time / animation-step offset.
 
-    // Pseudo code for rendering a zoom rotator
+    // Pseudo code for rendering a time-shift zoom rotator
     procedure render_time_shift_zoomrotator()
         
         for y = 0 to screen_height - 1
