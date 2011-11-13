@@ -1,7 +1,7 @@
 Time-shifting Zoom-Rotator
 ==========================
 
-[This canvas effect](fforw.de/static/demo/jamrot/) is based on the end credits effect in ["Jammin'", a Haujobb demo](http://www.youtube.com/watch?v=ZmuzXse-ftM#t=2m57s).
+[This canvas effect](http://fforw.de/static/demo/jamrot/) is based on the end credits effect in ["Jammin'", a Haujobb demo](http://www.youtube.com/watch?v=ZmuzXse-ftM#t=2m57s).
 
 It was basically a zoom-rotator with per-line time-shift and blur. This version actually rendered multiple screens and then recombined
 them line-wise, something which was really quick and easy to do on teh Amiga.
