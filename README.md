@@ -19,24 +19,24 @@ and in the angle between v and the horizontal axis in the image coordinate syste
 
 The diagram greatly exaggerates the length of the vector. It's normal size is so that it fits one pixel in screen coordinate system.
 
-// Pseudo code for rendering a zoom rotator
-// px = x coordinate of p
-// py = y coordinate of p
-// zoom = zoom factor (e.g. 1 / image_width )
-// angle = angle in radians
-render(px,py,zoom,angle)
-    
-    // delta coordinates in image space for one step in screen space
-    dx = cos(angle) * zoom
-    dy = sin(angle) * zoom
-    
-    // calculate starting coordinates u/v in image space 
-    // if we take steps of dx/dy each, where do we need to 
-    // start so that we reach 0/0 in image space at the point px/py 
-    // in screen space
-    u = - px * dx 
-    v = - py * dy
-    
-    for y = 0 to screen_height - 1
-        for x = 0 to screen_width - 1
+    // Pseudo code for rendering a zoom rotator
+    // px = x coordinate of p
+    // py = y coordinate of p
+    // zoom = zoom factor (e.g. 1 / image_width )
+    // angle = angle in radians
+    render(px,py,zoom,angle)
+        
+        // delta coordinates in image space for one step in screen space
+        dx = cos(angle) * zoom
+        dy = sin(angle) * zoom
+        
+        // calculate starting coordinates u/v in image space 
+        // if we take steps of dx/dy each, where do we need to 
+        // start so that we reach 0/0 in image space at the point px/py 
+        // in screen space
+        u = - px * dx 
+        v = - py * dy
+        
+        for y = 0 to screen_height - 1
+            for x = 0 to screen_width - 1
         
