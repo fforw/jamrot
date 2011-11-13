@@ -84,11 +84,9 @@ window.onload = function()
             var zoom = obj.zoom;
             var dx = Math.cos(obj.r) * zoom;
             var dy = Math.sin(obj.r) * zoom;
-            var posX = 256 - obj.x * dx;
-            var posY = 256 - obj.y * dy;
 
-            posX -= dy * line; 
-            posY += dx * line; 
+            var posX = 256 - obj.x * dx - dy * line;
+            var posY = 256 - obj.y * dy + dx * line;
             
             for (var x = 0 ; x < scanWidth; x += 4)
             {
