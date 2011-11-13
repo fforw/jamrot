@@ -1,5 +1,16 @@
 (function(){
     
+/**
+ * Very simple animation helper with multiple tween methods.
+ * 
+ * Animates the properties of a list of objects. Makes sure every property in every object has a numeric value. If a value is not give, the last value will be used or 0.
+ * 
+ */
+
+// All equations are copied from here: http://www.gizma.com/easing/
+// Originally written by Robert Penner, copied under BSD License
+// (http://www.robertpenner.com/)
+//
 var tween = {
     "linear" : function(t, b, c, d)
     {
@@ -7,10 +18,6 @@ var tween = {
         return c * t / d + b;
     },
 
-    // All equations are copied from here: http://www.gizma.com/easing/
-    // Originally written by Robert Penner, copied under BSD License
-    // (http://www.robertpenner.com/)
-    //
     // Params are as follows
     // t = current time
     // b = start value
@@ -220,6 +227,10 @@ key:
             return this.keyFrames[index];
         }
     },
+/**
+ * Returns an object with interpolated values for the Time t where the integer value of t 
+ * determines the keyframe used and fractional positon of t the position within the key frames.
+ */    
 interpolate:
     function(t)
     {
@@ -271,6 +282,9 @@ cleanup:
             dirty = false;
         }
     },
+/**
+ * Makes sure the give time value is within the bounds of this Interpolator.
+ */    
 clampTime:
     function(t)
     {

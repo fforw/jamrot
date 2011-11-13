@@ -7,6 +7,14 @@ var factor_max = 0.002;
 var speed = 1/ 250;
 var speed_max = 1 / 125;
 
+function setAlpha(imageData,v)
+{
+    for ( var i = 3, len = imageData.data.length; i < len; i+=4)
+    {
+        imageData.data[i] = 255;
+    }
+}
+
 window.onload = function()
 {
     var $canvas = $("#teh-canvas");
@@ -18,6 +26,8 @@ window.onload = function()
     var ctx = canvas.getContext('2d');  
     
     var offset = $canvas.offset();
+    
+    // turn mouse position into plus / minus the maximum values.
     $canvas.mousemove(function(ev)
     {   
         factor = (ev.pageX - offset.left) / width * factor_max * 2 - factor_max;
@@ -30,8 +40,11 @@ window.onload = function()
     ctx.drawImage($img[0], 0,0, width, height);
     
     var screen = ctx.createImageData(width,height); 
-    var image = ctx.getImageData(0,0,width,height); 
+    var image = ctx.getImageData(0,0,width,height);
 
+    setAlpha(screen,255);
+
+    // create interpolator with 3 zoomrotator state keyframes using easeInOutQuad tween.
     var ip = new Interpolator("easeInOutQuad");
     ip.add({
         x: width / 5,
@@ -55,32 +68,33 @@ window.onload = function()
     var time = 0.0;
     
     var scanWidth = width * 4;
+    var scanHeight = height * scanWidth;
 
     MainLoop.start($canvas, function() {
         
-        var line =0;
+        var line = 0;
         var imageData = image.data;
-        for (var y = 0 ; y < height * scanWidth; y+=scanWidth)
+        var screenData = screen.data;
+        for (var y = 0 ; y < scanHeight; y += scanWidth)
         {
             var lineTime = ip.clampTime( time + line * factor );
             var obj = ip.interpolate(lineTime);
             var zoom = obj.zoom;
             var dx = Math.cos(obj.r) * zoom;
             var dy = Math.sin(obj.r) * zoom;
-            var posX = - obj.x * dx;
-            var posY = - obj.y * dy;
+            var posX = 256 - obj.x * dx;
+            var posY = 256 - obj.y * dy;
 
             posX -= dy * line; 
             posY += dx * line; 
             
-            for (var x = 0 ; x < scanWidth; )
+            for (var x = 0 ; x < scanWidth; x += 4)
             {
-                var off = (Math.floor(posY) * scanWidth + posX * 4) & 0xffffc;
-                screen.data[y + x++] = imageData[off++];
-                screen.data[y + x++] = imageData[off++];
-                screen.data[y + x++] = imageData[off++];
-                screen.data[y + x++] = imageData[off];
-                
+                var off = (Math.floor(posY) * scanWidth + posX * 4) & 0xffffc; // mask value for a 512x512 graphic only
+                var soff = x + y;
+                screenData[soff++] = imageData[off++];
+                screenData[soff++] = imageData[off++];
+                screenData[soff++] = imageData[off++];
                 posX += dx;
                 posY += dy;
             }
@@ -91,7 +105,6 @@ window.onload = function()
         ctx.putImageData(screen,0,0);
 
         time = ip.clampTime( time +  speed);
-        
     });
 };
     
