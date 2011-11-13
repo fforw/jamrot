@@ -13,7 +13,7 @@ it all in one screen this time.
 Let's start the explanation with looking at a normal zoom rotator.
 
 Normal Zoom-Rotator
-=================== 
+------------------- 
 
 The normal zoom rotator is one of the classic demo effects. In shows a endlessly tiled image, zooming and rotating the image.
 
@@ -73,7 +73,7 @@ The diagram greatly exaggerates the length of the vector. It's normal size is so
 
 
 Easing
-======
+------
         
 In the old days, I would just add constant values to the px,py and angle and then precalculate a sine-wave for the zoom value or something.
 Since modern computers have so much more power than in the old days.
@@ -95,7 +95,7 @@ easing with fixed stepping on the x-axis.
 I set up an animation path out of three keyframes which you can still see in its original form when you center the mouse horizontally and give it some speed vertically.
 
 Time-shift
-==========
+----------
 
 Now the only thing I needed to do was to interpolate the keyframe values per line with a time / animation-step offset.
 
