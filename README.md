@@ -54,12 +54,12 @@ The diagram greatly exaggerates the length of the vector. It's normal size is so
         for y = 0 to screen_height - 1
         
             // we remember the line starting position
-            start_u = x
-            start_v = y
+            start_u = u
+            start_v = v
             for x = 0 to screen_width - 1
                 draw image pixel u/v truncated to image limits at screen pos x/y
                 u = u + du
-                u = v + dv
+                v = v + dv
             end
             
             // if du/dv is the step in horizontal screen direction, 
@@ -67,7 +67,7 @@ The diagram greatly exaggerates the length of the vector. It's normal size is so
             
             // we add that rotated step to the remembered starting position 
             u = start_u - dv
-            y = start_v + du
+            v = start_v + du
         end
     end
 
@@ -120,12 +120,12 @@ Now the only thing I needed to do was to interpolate the keyframe values per lin
             v = - py * dv + dx * line
         
             // we remember the line starting position
-            start_u = x
-            start_v = y
+            start_u = u
+            start_v = v
             for x = 0 to screen_width - 1
                 draw image pixel u/v truncated to image limits at screen pos x/y
                 u = u + du
-                u = v + dv
+                v = v + dv
             end
             
             // if du/dv is the step in horizontal screen direction, 
@@ -133,7 +133,7 @@ Now the only thing I needed to do was to interpolate the keyframe values per lin
             
             // we add that rotated step to the remembered starting position 
             u = start_u - dv
-            y = start_v + du
+            v = start_v + du
         end
         
         // advance global time for next rendering
