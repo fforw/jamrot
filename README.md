@@ -76,9 +76,9 @@ Easing
 ------
         
 In the old days, I would just add constant values to the px,py and angle and then precalculate a sine-wave for the zoom value or something.
-Since modern computers have so much more power than in the old days.
+Since modern computers have so much more power than in the old days, I thought I might try a more fancy way and use key-frame based animation.
 
-This time, I wanted to use key-frame based animation and wrote a simple Interpolator class that can interpolate between numeric properties on objects.
+I wrote a simple Interpolator class that can interpolate between numeric properties on objects.
 
     var ip = new Interpolator("easeInOutCubic", [ { x: 0, y: 0 }, { x: 255, y: 255 } ]);
     // obj containing the values for the point two thirds along the way
