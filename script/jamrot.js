@@ -82,23 +82,23 @@ window.onload = function()
             var lineTime = ip.clampTime( time + line * factor );
             var obj = ip.interpolate(lineTime);
             var zoom = obj.zoom;
-            var dx = Math.cos(obj.r) * zoom;
-            var dy = Math.sin(obj.r) * zoom;
+            var du = Math.cos(obj.r) * zoom;
+            var dv = Math.sin(obj.r) * zoom;
 
-            var posX = 256 - obj.x * dx - dy * line;
-            var posY = 256 - obj.y * dy + dx * line;
+            // image start coordinates for interpolated values and current line 
+            var u = 256 - obj.x * du - dv * line;
+            var v = 256 - obj.y * dv + du * line;
             
             for (var x = 0 ; x < scanWidth; x += 4)
             {
-                var off = (Math.floor(posY) * scanWidth + posX * 4) & 0xffffc; // mask value for a 512x512 graphic only
+                var off = (Math.floor(v) * scanWidth + u * 4) & 0xffffc; // mask value for a 512x512 graphic only
                 var soff = x + y;
                 screenData[soff++] = imageData[off++];
                 screenData[soff++] = imageData[off++];
                 screenData[soff++] = imageData[off++];
-                posX += dx;
-                posY += dy;
+                u += du;
+                v += dv;
             }
-
             line++;
         }
         
