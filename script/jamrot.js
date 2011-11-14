@@ -95,7 +95,7 @@ window.onload = function()
                 var soff = x + y;
                 screenData[soff++] = imageData[off++];
                 screenData[soff++] = imageData[off++];
-                screenData[soff++] = imageData[off++];
+                screenData[soff] = imageData[off];
                 u += du;
                 v += dv;
             }
