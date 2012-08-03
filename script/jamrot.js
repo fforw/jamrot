@@ -72,7 +72,7 @@ window.onload = function()
     var scanWidth = width * 4;
     var scanHeight = height * scanWidth;
 
-    MainLoop.start($canvas, function() {
+    var mainLoop = function() {
         
         var line = 0;
         var imageData = image.data;
@@ -105,7 +105,11 @@ window.onload = function()
         ctx.putImageData(screen,0,0);
 
         time = ip.clampTime( time +  speed);
-    });
+        
+        requestAnimationFrame(mainLoop);
+    };
+    
+    mainLoop();
 };
     
 })(jQuery);
