@@ -1,10 +1,10 @@
-(function(){
-    
+(function(global){
+    "use strict";
 /**
  * Very simple animation helper with multiple tween methods.
- * 
+ *
  * Animates the properties of a list of objects. Makes sure every property in every object has a numeric value. If a value is not give, the last value will be used or 0.
- * 
+ *
  */
 
 // All equations are copied from here: http://www.gizma.com/easing/
@@ -63,112 +63,118 @@ var tween = {
     // acceleration until halfway, then deceleration 
     "easeInOutCirc" : function(t, b, c, d) { t /= d / 2; if (t < 1) { return -c / 2 * (Math.sqrt(1 - t * t) - 1) + b; } t -= 2; return c / 2 * (Math.sqrt(1 - t * t) + 1) + b; } 
 };
- 
-this.Interpolator = Class.extend({
-init:
-    function(easing, objects)
+
+function getTween(easing)
+{
+    var fn = tween[easing];
+
+    if (!fn)
     {
-        easing = easing || "linear";
-    
-        this.tweenFn = typeof easing == "function" ? easing: tween[easing];
-        this.keyFrames = [];
-        
-        if (objects !== undefined)
+        throw new Error("No tween named '" + easing + "'.");
+    }
+
+    return  fn;
+}
+
+global.Interpolator = Class.extend({
+    init: function (easing, objects) {
+
+        if (objects === undefined)
         {
+            objects = easing;
+            easing = "linear";
+        }
+
+        this.tweenFn = getTween(easing);
+        this.keyFrames = [];
+
+        this.dirty = true;
+
+        if (typeof objects !== "undefined") {
             this.keyFrames = this.keyFrames.concat(objects);
         }
     },
-add:
-    function(obj)
-    {
+    add: function (obj) {
         this.dirty = true;
         this.keyFrames.push(obj);
         return this.keyFrames.length - 1;
     },
-key:
-    function(index, value)
-    {
-        if (value === undefined)
-        {
+    key: function (index, value) {
+        if (typeof value === "undefined") {
             this.keyFrames[index] = value;
         }
-        else
-        {
+        else {
             return this.keyFrames[index];
         }
     },
-/**
- * Returns an object with interpolated values for the Time t where the integer value of t 
- * determines the keyframe used and fractional positon of t the position within the key frames.
- */    
-interpolate:
-    function(t)
-    {
-        this.cleanup();
-        
-        var idx0 = Math.floor(t);
-        var fract = t - idx0;
-        
-        var obj = {};
-        var obj0 = this.keyFrames[idx0];
-        
-        var obj1 = this.keyFrames[idx0 + 1] || this.keyFrames[0];
-        
-        for (var k in obj0)
-        {
-            obj[k] = this.tweenFn(fract, obj0[k], obj1[k] - obj0[k], 1);
+    /**
+     * Returns an object with interpolated values for the Time t where the integer value of t
+     * determines the keyframe used and fractional positon of t the position within the key frames.
+     */
+    interpolate: function (t) {
+
+        var obj1, obj0, obj, fract, idx0, localTween, fn;
+
+        this.dirty && this.cleanup();
+
+        idx0 = Math.floor(t);
+        fract = t - idx0;
+
+        obj = {};
+        obj0 = this.keyFrames[idx0];
+
+        obj1 = this.keyFrames[idx0 + 1] || this.keyFrames[0];
+
+        for (var k in obj0) {
+
+            localTween = obj0._tween;
+            fn = typeof localTween == "function" ? getTween(localTween) : this.tweenFn;
+            obj[k] = fn(fract, obj0[k], obj1[k] - obj0[k], 1);
         }
-        
+
         return obj;
     },
-cleanup:
-    function()
-    {
-        if (this.dirty)
-        {
-            var key = {};
-            for ( var i = 0, len = this.keyFrames.length; i < len; i++)
-            {
-                var frame = this.keyFrames[i];
-                for (var k in frame)
+    cleanup: function () {
+
+        var i,
+            len = this.keyFrames.length,
+            key = {};
+
+        for (i = 0; i < len; i++) {
+            var frame = this.keyFrames[i];
+            for (var k in frame) {
+                if (k[0] != "_")
                 {
                     key[k] = true;
                 }
             }
-            
-            for ( var i = 0, len = this.keyFrames.length; i < len; i++)
-            {
-                var frame = this.keyFrames[i];
-                for (var k in key)
-                {
-                    var v = frame[k];
-                    
-                    if (v === undefined)
-                    {
-                        frame[j] = i == 0 ? 0 : this.keyFrames[i-1][k];
-                    }
+        }
+
+        for (i = 0; i < len; i++) {
+            var frame = this.keyFrames[i];
+            for (var k in key) {
+                var v = frame[k];
+
+                if (typeof v === "undefined") {
+                    frame[k] = i == 0 ? 0 : this.keyFrames[i - 1][k];
                 }
             }
-            dirty = false;
         }
+        this.dirty = false;
     },
-/**
- * Makes sure the give time value is within the bounds of this Interpolator.
- */    
-clampTime:
-    function(t)
-    {
+    /**
+     * Makes sure the give time value is within the bounds of this Interpolator.
+     */
+    clampTime: function (t) {
         var len = this.keyFrames.length - 1;
         var i = Math.floor(t);
         var fract = t - i;
-        
+
         i = i % len;
-        if (i < 0)
-        {
+        if (i < 0) {
             i += len;
         }
         return i + fract;
     }
 });
-
-})();
+})(this);
